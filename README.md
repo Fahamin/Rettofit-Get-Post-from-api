@@ -1,2 +1,18 @@
 # Rettofit-fatech-data-from-api
-# Json-fetch-Using-Rettofit
+[
+  {
+    "name": "Captain America",
+    "realname": "Steve Rogers",
+    
+  },
+  {
+    "name": "Iron Man",
+    "realname": "Tony Stark",
+   
+  },
+  {
+    "name": "Wolvarine",
+    "realname": "James Howlett",
+   
+  }
+]
