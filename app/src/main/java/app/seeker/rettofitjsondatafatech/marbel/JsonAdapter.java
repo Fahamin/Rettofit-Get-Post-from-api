@@ -1,4 +1,4 @@
-package app.seeker.rettofitjsondatafatech;
+package app.seeker.rettofitjsondatafatech.marbel;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.List;
+
+import app.seeker.rettofitjsondatafatech.R;
 
 public class JsonAdapter extends RecyclerView.Adapter<JsonAdapter.myViewHoldera> {
     private Context context;

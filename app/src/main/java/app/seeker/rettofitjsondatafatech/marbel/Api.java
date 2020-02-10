@@ -1,4 +1,4 @@
-package app.seeker.rettofitjsondatafatech;
+package app.seeker.rettofitjsondatafatech.marbel;
 
 import java.util.List;
 
