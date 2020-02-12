@@ -3,7 +3,6 @@ package app.seeker.rettofitjsondatafatech.jsonplaoption;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -22,6 +21,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class JsonPlacehACT extends AppCompatActivity {
 
     TextView textView;
+    JsonApi api;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,25 +45,64 @@ public class JsonPlacehACT extends AppCompatActivity {
                 addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        JsonApi api = retrofit.create(JsonApi.class);
+        api = retrofit.create(JsonApi.class);
 
-        Call<List<JsonModel>> call = api.getAllDATA();
+
+          getPOSt();
+       // getCommet();
+
+    }
+
+    private void getCommet() {
+
+        Call<List<CommentModel>> call =api.getAllComment(3);
+
+        call.enqueue(new Callback<List<CommentModel>>() {
+            @Override
+            public void onResponse(Call<List<CommentModel>> call, Response<List<CommentModel>> response) {
+
+                if(response.isSuccessful())
+                {
+                    List<CommentModel> list = response.body();
+
+                    for(CommentModel comment : list)
+                    {
+                        String addString = "";
+                        addString += comment.getId()+"\n\n";
+                        addString += comment.getPostId() + "\n\n";
+                        addString += comment.getName()+ "\n\n";
+                        addString += comment.getEmail()+ "\n\n";
+
+                        textView.append(addString);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CommentModel>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void getPOSt() {
+
+
+        Call<List<JsonModel>> call = api.getAllDATA(2,"id","desc");
 
         call.enqueue(new Callback<List<JsonModel>>() {
             @Override
             public void onResponse(Call<List<JsonModel>> call, Response<List<JsonModel>> response) {
-                if(response.isSuccessful())
-                {
+                if (response.isSuccessful()) {
                     List<JsonModel> list = response.body();
 
-                    for (JsonModel jsonModel : list)
-                    {
-                        String result  = "";
+                    for (JsonModel jsonModel : list) {
+                        String result = "";
 
-                        result += "Id" + jsonModel.getId()+"\n";
-                        result += "userId" + jsonModel.getUserId()+"\n";
-                        result += "title" + jsonModel.getTitle()+"\n\n";
-                        result += "body"+jsonModel.getBody()+"\n\n";
+                        result += "Id" + jsonModel.getId() + "\n";
+                        result += "userId" + jsonModel.getUserId() + "\n";
+                        result += "title" + jsonModel.getTitle() + "\n\n";
+                        result += "body" + jsonModel.getBody() + "\n\n";
 
                         textView.append(result);
                     }
@@ -75,7 +114,6 @@ public class JsonPlacehACT extends AppCompatActivity {
 
             }
         });
-
     }
 
 }
