@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
                 .baseUrl(Api.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create()) //Here we are using the GsonConverterFactory to directly convert json data to object
                 .build();
+
         Api api = retrofit.create(Api.class);//api interface
 
         Call<List<Hero>> call = api.getHeroes();

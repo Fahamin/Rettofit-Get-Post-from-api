@@ -11,7 +11,7 @@ import retrofit2.http.Url;
 public interface JsonApi {
 
 
-// basee url : https://jsonplaceholder.typicode.com/
+// base url : https://jsonplaceholder.typicode.com/
 
 
    /* @GET("posts")
@@ -37,4 +37,8 @@ public interface JsonApi {
 
     @GET
   Call<List<JsonModelComment>>getAllComment(@Url String url);
+
+
+    // here is post to url option
+
 }
