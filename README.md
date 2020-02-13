@@ -1,3 +1,8 @@
+jsonApi
+https://jsonplaceholder.typicode.com/posts
+
+
+Marbel
 # Rettofit-fatech-data-from-api
 [
   {
