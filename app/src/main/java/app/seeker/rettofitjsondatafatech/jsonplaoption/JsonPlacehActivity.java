@@ -8,7 +8,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import app.seeker.rettofitjsondatafatech.R;
 import app.seeker.rettofitjsondatafatech.marbel.MainActivity;
@@ -18,7 +20,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class JsonPlacehACT extends AppCompatActivity {
+public class JsonPlacehActivity extends AppCompatActivity {
 
     TextView textView;
     JsonApi api;
@@ -35,7 +37,7 @@ public class JsonPlacehACT extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(JsonPlacehACT.this, MainActivity.class));
+                startActivity(new Intent(JsonPlacehActivity.this, MainActivity.class));
 
             }
         });
@@ -48,24 +50,24 @@ public class JsonPlacehACT extends AppCompatActivity {
         api = retrofit.create(JsonApi.class);
 
 
-          getPOSt();
-       // getCommet();
+       //   getPOSt();
+        getCommet();
 
     }
 
     private void getCommet() {
 
-        Call<List<CommentModel>> call =api.getAllComment(3);
+        Call<List<JsonModelComment>> call =api.getAllComment("posts/3/comments");
 
-        call.enqueue(new Callback<List<CommentModel>>() {
+        call.enqueue(new Callback<List<JsonModelComment>>() {
             @Override
-            public void onResponse(Call<List<CommentModel>> call, Response<List<CommentModel>> response) {
+            public void onResponse(Call<List<JsonModelComment>> call, Response<List<JsonModelComment>> response) {
 
                 if(response.isSuccessful())
                 {
-                    List<CommentModel> list = response.body();
+                    List<JsonModelComment> list = response.body();
 
-                    for(CommentModel comment : list)
+                    for(JsonModelComment comment : list)
                     {
                         String addString = "";
                         addString += comment.getId()+"\n\n";
@@ -79,7 +81,7 @@ public class JsonPlacehACT extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<CommentModel>> call, Throwable t) {
+            public void onFailure(Call<List<JsonModelComment>> call, Throwable t) {
 
             }
         });
@@ -87,16 +89,20 @@ public class JsonPlacehACT extends AppCompatActivity {
 
     private void getPOSt() {
 
+        Map<String ,String> param = new HashMap<>();
+        param.put("id","3");
+        param.put("_sort","desc");
 
-        Call<List<JsonModel>> call = api.getAllDATA(2,"id","desc");
 
-        call.enqueue(new Callback<List<JsonModel>>() {
+        Call<List<JsonModelPost>> call = api.getAllDATA(param);
+
+        call.enqueue(new Callback<List<JsonModelPost>>() {
             @Override
-            public void onResponse(Call<List<JsonModel>> call, Response<List<JsonModel>> response) {
+            public void onResponse(Call<List<JsonModelPost>> call, Response<List<JsonModelPost>> response) {
                 if (response.isSuccessful()) {
-                    List<JsonModel> list = response.body();
+                    List<JsonModelPost> list = response.body();
 
-                    for (JsonModel jsonModel : list) {
+                    for (JsonModelPost jsonModel : list) {
                         String result = "";
 
                         result += "Id" + jsonModel.getId() + "\n";
@@ -110,7 +116,7 @@ public class JsonPlacehACT extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<JsonModel>> call, Throwable t) {
+            public void onFailure(Call<List<JsonModelPost>> call, Throwable t) {
 
             }
         });

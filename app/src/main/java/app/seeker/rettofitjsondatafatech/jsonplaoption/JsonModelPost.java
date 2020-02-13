@@ -3,7 +3,7 @@ package app.seeker.rettofitjsondatafatech.jsonplaoption;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class JsonModel {
+public class JsonModelPost {
 
     @SerializedName("userId")
     @Expose

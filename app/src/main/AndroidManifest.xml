@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".jsonplaoption.JsonPlacehACT"
+            android:name=".jsonplaoption.JsonPlacehActivity"
             android:label="@string/title_activity_json_placeh"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
