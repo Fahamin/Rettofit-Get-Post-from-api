@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.List;
@@ -51,7 +52,77 @@ public class JsonPlacehActivity extends AppCompatActivity {
 
 
        //   getPOSt();
-        getCommet();
+      //  getCommet();
+
+        createPost();
+        createPost2();
+
+    }
+
+    private void createPost2() {
+
+        Call<JsonModelPost> call = api.createPost2(12,"new title","new body");
+
+
+        call.enqueue(new Callback<JsonModelPost>() {
+            @Override
+            public void onResponse(Call<JsonModelPost> call, Response<JsonModelPost> response) {
+                if(response.isSuccessful())
+                {
+                    textView.setText("code" + response.code());
+                    Toast.makeText(JsonPlacehActivity.this, "post succfully", Toast.LENGTH_SHORT).show();
+                }
+                JsonModelPost post =  response.body();
+                String result = "";
+
+                result += "Id" + post.getId() + "\n";
+                result += "userId" + post.getUserId() + "\n";
+                result += "title" + post.getTitle() + "\n\n";
+                result += "body" + post.getBody() + "\n\n";
+
+                textView.append(result);
+            }
+
+            @Override
+            public void onFailure(Call<JsonModelPost> call, Throwable t) {
+                textView.setText("faild to post");
+
+            }
+        });
+    }
+
+    private void createPost() {
+
+        JsonModelPost jsonModelPost = new JsonModelPost(111,"WOW","THIS IS BODY");
+
+        Call<JsonModelPost> call = api.createPost(jsonModelPost);
+
+
+        call.enqueue(new Callback<JsonModelPost>() {
+            @Override
+            public void onResponse(Call<JsonModelPost> call, Response<JsonModelPost> response) {
+                if(response.isSuccessful())
+                {
+                    textView.setText("code" + response.code());
+                    Toast.makeText(JsonPlacehActivity.this, "post succfully", Toast.LENGTH_SHORT).show();
+                }
+                JsonModelPost post =  response.body();
+                String result = "";
+
+                result += "Id" + post.getId() + "\n";
+                result += "userId" + post.getUserId() + "\n";
+                result += "title" + post.getTitle() + "\n\n";
+                result += "body" + post.getBody() + "\n\n";
+
+                textView.append(result);
+            }
+
+            @Override
+            public void onFailure(Call<JsonModelPost> call, Throwable t) {
+                textView.setText("faild to post");
+
+            }
+        });
 
     }
 

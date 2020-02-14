@@ -7,7 +7,7 @@ public class JsonModelPost {
 
     @SerializedName("userId")
     @Expose
-    private Integer userId;
+    private int userId;
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -17,6 +17,12 @@ public class JsonModelPost {
     @SerializedName("body")
     @Expose
     private String body;
+
+    public JsonModelPost(int userId, String title, String body) {
+        this.userId = userId;
+        this.title = title;
+        this.body = body;
+    }
 
     public Integer getUserId() {
         return userId;
