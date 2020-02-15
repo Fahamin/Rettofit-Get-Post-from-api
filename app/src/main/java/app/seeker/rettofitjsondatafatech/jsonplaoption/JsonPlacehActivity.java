@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +46,10 @@ public class JsonPlacehActivity extends AppCompatActivity {
             }
         });
 
+
+        Gson gson = new GsonBuilder().serializeNulls().create();//for patch to show null title
+       // addConverterFactory(GsonConverterFactory.create(gson))
+
         Retrofit retrofit = new Retrofit.Builder().
                 baseUrl("https://jsonplaceholder.typicode.com/").
                 addConverterFactory(GsonConverterFactory.create())
@@ -51,28 +58,60 @@ public class JsonPlacehActivity extends AppCompatActivity {
         api = retrofit.create(JsonApi.class);
 
 
-       //   getPOSt();
-      //  getCommet();
+        //   getPOSt();
+        //  getCommet();
 
-        createPost();
-        createPost2();
+        //  createPost();
+        //  createPost2();
 
+        updatePost();
+
+    }
+
+    private void updatePost() {
+
+        JsonModelPost post = new JsonModelPost(5, null, "new Text");
+        Call<JsonModelPost> call = api.patchPost(4, post);
+        // Call<JsonModelPost> call = api.putPost(4, post);
+
+        call.enqueue(new Callback<JsonModelPost>() {
+            @Override
+            public void onResponse(Call<JsonModelPost> call, Response<JsonModelPost> response) {
+                if (!response.isSuccessful()) {
+                    textView.setText("code" + response.code());
+                    Toast.makeText(JsonPlacehActivity.this, "post succfully", Toast.LENGTH_SHORT).show();
+                }
+                JsonModelPost post = response.body();
+                String result = "";
+
+                result += "Id" + post.getId() + "\n";
+                result += "userId" + post.getUserId() + "\n";
+                result += "title" + post.getTitle() + "\n\n";
+                result += "body" + post.getBody() + "\n\n";
+
+                textView.append(result);
+            }
+
+            @Override
+            public void onFailure(Call<JsonModelPost> call, Throwable t) {
+                textView.setText(t.getMessage());
+            }
+        });
     }
 
     private void createPost2() {
 
-        Call<JsonModelPost> call = api.createPost2(12,"new title","new body");
+        Call<JsonModelPost> call = api.createPost2(12, "new title", "new body");
 
 
         call.enqueue(new Callback<JsonModelPost>() {
             @Override
             public void onResponse(Call<JsonModelPost> call, Response<JsonModelPost> response) {
-                if(response.isSuccessful())
-                {
+                if (response.isSuccessful()) {
                     textView.setText("code" + response.code());
                     Toast.makeText(JsonPlacehActivity.this, "post succfully", Toast.LENGTH_SHORT).show();
                 }
-                JsonModelPost post =  response.body();
+                JsonModelPost post = response.body();
                 String result = "";
 
                 result += "Id" + post.getId() + "\n";
@@ -93,7 +132,7 @@ public class JsonPlacehActivity extends AppCompatActivity {
 
     private void createPost() {
 
-        JsonModelPost jsonModelPost = new JsonModelPost(111,"WOW","THIS IS BODY");
+        JsonModelPost jsonModelPost = new JsonModelPost(111, "WOW", "THIS IS BODY");
 
         Call<JsonModelPost> call = api.createPost(jsonModelPost);
 
@@ -101,12 +140,11 @@ public class JsonPlacehActivity extends AppCompatActivity {
         call.enqueue(new Callback<JsonModelPost>() {
             @Override
             public void onResponse(Call<JsonModelPost> call, Response<JsonModelPost> response) {
-                if(response.isSuccessful())
-                {
+                if (response.isSuccessful()) {
                     textView.setText("code" + response.code());
                     Toast.makeText(JsonPlacehActivity.this, "post succfully", Toast.LENGTH_SHORT).show();
                 }
-                JsonModelPost post =  response.body();
+                JsonModelPost post = response.body();
                 String result = "";
 
                 result += "Id" + post.getId() + "\n";
@@ -128,23 +166,21 @@ public class JsonPlacehActivity extends AppCompatActivity {
 
     private void getCommet() {
 
-        Call<List<JsonModelComment>> call =api.getAllComment("posts/3/comments");
+        Call<List<JsonModelComment>> call = api.getAllComment("posts/3/comments");
 
         call.enqueue(new Callback<List<JsonModelComment>>() {
             @Override
             public void onResponse(Call<List<JsonModelComment>> call, Response<List<JsonModelComment>> response) {
 
-                if(response.isSuccessful())
-                {
+                if (response.isSuccessful()) {
                     List<JsonModelComment> list = response.body();
 
-                    for(JsonModelComment comment : list)
-                    {
+                    for (JsonModelComment comment : list) {
                         String addString = "";
-                        addString += comment.getId()+"\n\n";
+                        addString += comment.getId() + "\n\n";
                         addString += comment.getPostId() + "\n\n";
-                        addString += comment.getName()+ "\n\n";
-                        addString += comment.getEmail()+ "\n\n";
+                        addString += comment.getName() + "\n\n";
+                        addString += comment.getEmail() + "\n\n";
 
                         textView.append(addString);
                     }
@@ -160,9 +196,9 @@ public class JsonPlacehActivity extends AppCompatActivity {
 
     private void getPOSt() {
 
-        Map<String ,String> param = new HashMap<>();
-        param.put("id","3");
-        param.put("_sort","desc");
+        Map<String, String> param = new HashMap<>();
+        param.put("id", "3");
+        param.put("_sort", "desc");
 
 
         Call<List<JsonModelPost>> call = api.getAllDATA(param);
